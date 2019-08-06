@@ -3,29 +3,9 @@ import datetime
 import prettytable
 import matplotlib.pyplot as plt
 
-N = int(input(print("Введите количество элементов: \n")))
-min = int(input(print("ведите минимальный элемент списка: \n")))
-max = int(input(print("ведите максимальный элемент списка: \n")))
-
-A = []
-
-for i in range(N):
-    A.append(random.randint(min, max))
-print(A)
-
-B = A.copy()
-print(B)
-
-
-"""x = []
-for N in range(1000, 5001, 1000):
-    x.append(N)
-    min = 1
-    max = N
-    A = []
-    for i in range(N):
-        A.append(int(round(random.random()*(max - min)+min)))
-"""
+##N = int(input(print("Введите количество элементов: \n")))
+#min = int(input(print("ведите минимальный элемент списка: \n")))
+#max = int(input(print("ведите максимальный элемент списка: \n")))
 
 
 def MergeSort(A):
@@ -65,8 +45,6 @@ def SelectSort(A):
             j += 1
         A[i], A[min_ind] = A[min_ind], A[i]
 
-SelectSort(A)
-print(A)
 
 def InsertSort(A):
     for i in range(1, len(A)):
@@ -79,7 +57,41 @@ def InsertSort(A):
         A[j+1] = key
 
 
-D = [11, 2, 14, 1, 9]
-print("D = ", D)
-InsertSort(D)
-print(D)
+table = prettytable.PrettyTable(["Размер списка", "MergeSort", "SelectSort"])
+x = []
+y1 = []
+y2 = []
+
+for N in range(1000, 5001, 1000):
+    x.append(N)
+    min = 1
+    max = N
+    A = []
+    for i in range(N):
+        A.append(int(round(random.random()*(max - min)+min)))
+
+    B = A.copy()
+
+    print(B)
+
+    t1 = datetime.datetime.now()
+    MergeSort(A)
+    t2 = datetime.datetime.now()
+    y1.append((t2 - t1).total_seconds())
+    print("MergeSort " + str(N) + " заняла  " + str((t2 - t1).total_seconds()) + " c")
+
+    t3 = datetime.datetime.now()
+    SelectSort(B)
+    t4 = datetime.datetime.now()
+    y2.append((t4 - t3).total_seconds())
+    print("SelectSort " + str(N) + " заняла  " + str((t4 - t3).total_seconds()) + " c")
+
+    table.add_row([str(N), str((t2 - t1).total_seconds()), str((t4 - t3).total_seconds())])
+print(table)
+
+plt.plot(x, y1, "C0")
+plt.plot(x, y2, "C1")
+plt.show()
+
+C = A
+print(C)
